@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Change book info</title>
+<link rel="stylesheet" type="text/css" th:href="@{/CSS/material-dashboard.css}">
+</head>
+<body>
+<ul th:replace="page-layout :: employeeNavBar"></ul>
+
+<div class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+	<div class="container-fluid px-2 px-md-4">
+		<div class="page-header min-height-300 border-radius-xl mt-4"
+			 style="background-image:
+			 url('https://images.unsplash.com/photo-1602722053020-af31042989d5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+			<span class="mask  bg-gradient-info  opacity-6"></span>
+		</div>
+
+		<br><br><br><br><br>
+
+		<div class="row ">
+			<div class="col-10 ms-8">
+				<div class="card my-4">
+					<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+						<div class="bg-gradient-warning shadow-warning border-radius-lg pt-4 pb-3">
+							<h3 class="text-white text-center text-capitalize ps-3">CHANGE BOOK DATA</h3>
+
+							<h5 class="text-white text-center text-capitalize ps-3" th:text="${book.title}"></h5>
+						</div>
+					</div>
+					<div class="card-header mt-4 ms-2 pb-0 p-3">
+						<div class="row">
+							<div class="col-6 d-flex align-items-center">
+								<h6 class="mb-0">Book Details</h6>
+							</div>
+							<br><br><br><br>
+
+						</div>
+					</div>
+					<form action="/employee/books/savebookchange" th:object="${book}" th:method="PUT">
+
+						<div class="card-body ms-4  p-3 pb-0">
+							<ul class="list-group">
+
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="d-flex flex-column">
+										<h6 class="mb-1 text-dark font-weight-bold text-sm">Book ID</h6>
+										<span class="text-xs" th:text="${bookId}"></span>
+										<input type="hidden" th:value="${book.bookId}" th:field="${book.bookId}">
+									</div>
+
+								</li>
+
+
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+
+									<div class="row">
+										<div class="col-120">
+											<label class="text-primary" for="Title">Title</label>
+										</div>
+										<div class="input-group input-group-outline mb-3">
+											<input type="text" id="Title" th:value="${book.title}" th:field="${book.title}" required="required" name="Title" class="form-control">
+										</div>
+									</div>
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+
+									<div class="row">
+										<div class="col-80">
+											<label class="text-primary" for="author">Author</label>
+										</div>
+										<div class="input-group input-group-outline mb-3">
+											<input type="text" id="author" th:value="${book.author}" th:field="${book.author}" required="required" name="author" class="form-control">
+										</div>
+									</div>
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+
+									<div class="row">
+										<div class="col-80">
+											<label class="text-primary" for="releaseYear">Release Year</label>
+										</div>
+										<div class="input-group input-group-outline mb-3">
+											<input type="number" id="releaseYear" th:value="${book.releaseYear}" th:field="${book.releaseYear}" required="required" name="releaseYear" class="form-control">
+										</div>
+									</div>
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+
+									<div class="row">
+										<div class="col-80">
+											<label class="text-primary" for="edition">Edition</label>
+										</div>
+										<div class="input-group input-group-outline  mb-3">
+											<input type="number" id="edition" th:value="${book.edition}" th:field="${book.edition}" required="required" name="edition" class="form-control">
+										</div>
+									</div>
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="row">
+										<div class="col-80">
+											<label class="text-primary" >Return Date</label>
+										</div>
+
+										<div th:if="${book.theUser != null}" class="input-group input-group-outline mb-3">
+											<input type="text" th:value="${book.returnDate}" required="required" th:field="${book.returnDate}"  class="form-control">
+										</div>
+
+										<div th:if="${book.theUser != null}" class="col-80">
+											<label class="text-info" >DD-MM-YYYY</label>
+										</div>
+
+										<div th:if="${book.theUser == null}" class="col-80">
+											<label class="text-info">No return date available.</label>
+										</div>
+
+									</div>
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="row">
+										<div class="col-80">
+											<label class="text-primary" for="edition">Current user</label>
+										</div>
+
+										<div class="col-80">
+											<label class="text-info"th:if="${book.theUser == null}">No current user.</label>
+											<label class="text-success" th:if="${book.theUser != null}" th:text="${book.theUser.firstName} + ' ' +  ${book.theUser.lastName}"></label>
+										</div>
+										<div th:if="${book.theUser != null}"   class="col-80 form-check" style="width: 450px">
+											<input class="form-check-input" type="checkbox" id="removeCurrentUser" name="removeCurrentUser">
+											<input type="hidden" th:value="${book.theUser}" th:field="${book.theUser}">
+											<label class="text-info" for="removeCurrentUser">Remove current user.</label>
+										</div>
+
+									</div>
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="row">
+										<div class="col-50">
+											<label class="text-primary">Reserved From</label>
+										</div>
+										<div class="input-group input-group-outline mb-3" th:if="${book.reservedByUser != null}" >
+											<input class="form-control" type="text" th:value="${book.startReservationDate}" required="required" th:field="${book.startReservationDate}">
+										</div>
+										<div th:if="${book.reservedByUser == null}" class="col-75">
+											<label class="text-info">No reservation date available.</label>
+										</div>
+										<div th:if="${book.reservedByUser != null}" class="col-75">
+											<label class="text-info">DD-MM-YYYY</label>
+										</div>
+									</div>
+
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="row">
+										<div class="col-50 ">
+											<label class="text-primary">Reserved Until</label>
+										</div>
+										<div class="input-group input-group-outline mb-3"   th:if="${book.reservedByUser != null}">
+											<input class="form-control" type="text" th:value="${book.endReservationDate}" required="required" th:field="${book.endReservationDate}">
+										</div>
+										<div th:if="${book.reservedByUser == null}" class="col-75">
+											<label class="text-info">No reservation date available.</label>
+										</div>
+										<div th:if="${book.reservedByUser != null}" class="col-75">
+											<label class="text-info">DD-MM-YYYY</label>
+										</div>
+									</div>
+
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="row">
+										<div class="col-80">
+											<label class="text-primary">Reserved By The User</label>
+										</div>
+										<div class="col-80">
+											<label class="text-info" th:if="${book.reservedByUser == null}">No current user.</label>
+											<label class="text-success" th:if="${book.reservedByUser != null}" th:text="${book.reservedByUser.firstName} + ' ' +  ${book.reservedByUser.lastName}"></label>
+										</div>
+										<div th:if="${book.reservedByUser != null}" class="col-75 form-check" style="width: 450px">
+											<input class="form-check-input" type="checkbox" id="removeReservation" name="removeReservation">
+											<input type="hidden" th:value="${book.reservedByUser}" th:field="${book.reservedByUser}">
+											<label class="text-info" for="removeCurrentUser">Remove reservation and make book available.</label>
+										</div>
+									</div>
+
+
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="row">
+										<div class="col-50">
+										</div>
+										<div class="col-75">
+											<input type="submit" value="Change Data" class="btn bg-gradient-success  my-4 " />
+											<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+											<input type="hidden" name="_method" th:value="PUT">
+										</div>
+									</div>
+
+
+								</li>
+
+
+							</ul>
+						</div>
+						<br><br>
+					</form>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

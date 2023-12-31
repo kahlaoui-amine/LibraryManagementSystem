@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <link rel="icon" type="image/png" href="/Images/library.jpg" sizes="16x16">
+
+    <link id="pagestyle" rel="stylesheet" th:href="@{CSS/material-dashboard.css}">
+    <title>Home</title>
+</head>
+<body>
+<div class="main-content position-relative max-height-vh-100 h-100">
+    <div class="container-fluid px-2 px-md-4">
+        <div class="page-header min-height-300 border-radius-xl mt-4"
+             style="background-image:
+			 url('https://images.unsplash.com/photo-1602722053020-af31042989d5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+            <span class="mask  bg-gradient-info  opacity-6"></span>
+        </div>
+        <div class="row" th:fragment="adminHeader">
+            <div >
+                <div class="row gx-4 mb-2">
+                    <div class="col-auto">
+                        <div class="avatar avatar-xl position-relative">
+                            <img src="/Images/me.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                        </div>
+                    </div>
+                    <div class="col-auto my-auto">
+                        <div class="h-100">
+                            <h5 class="mb-1" th:text="${ currentUser.firstName + ' ' + currentUser.lastName}">
+
+                            </h5>
+                            <p class="badge badge-sm bg-gradient-danger">
+                                <text th:if="${currentUser.role.equals('ROLE_ADMIN')}">ADMIN</text>
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row" th:fragment="UserHeader">
+            <div >
+                <div class="row gx-4 mb-2">
+                    <div class="col-auto">
+                        <div class="avatar avatar-xl position-relative">
+                            <img src="/Images/ivana-square.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                        </div>
+                    </div>
+                    <div class="col-auto my-auto">
+                        <div class="h-100">
+                            <h5 class="mb-1" th:text="${ currentUser.firstName + ' ' + currentUser.lastName}">
+
+                            </h5>
+                            <p class="badge badge-sm bg-gradient-info">
+                                <text th:if="${currentUser.role.equals('ROLE_USER')}">LIBRARY MEMBER</text>
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row" th:fragment="EmployeeHeader">
+            <div >
+                <div class="row gx-4 mb-2">
+                    <div class="col-auto">
+                        <div class="avatar avatar-xl position-relative">
+                            <img src="/Images/employee.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                        </div>
+                    </div>
+                    <div class="col-auto my-auto">
+                        <div class="h-100">
+                            <h5 class="mb-1" th:text="${ currentUser.firstName + ' ' + currentUser.lastName}">
+
+                            </h5>
+                            <p class="badge badge-sm bg-gradient-success">
+                                <text th:if="${currentUser.role.equals('ROLE_EMPLOYEE')}">EMPLOYEE</text>
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+</body>
+</html>

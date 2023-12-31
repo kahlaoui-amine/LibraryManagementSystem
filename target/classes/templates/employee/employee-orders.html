@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/material-dashboard.css}">
+
+	<meta charset="ISO-8859-1">
+<title>Orders</title>
+</head>
+<body>
+	
+	<ul th:replace="page-layout :: employeeNavBar"></ul>
+	<div class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+		<div class="container-fluid px-2 px-md-4">
+			<div class="page-header min-height-300 border-radius-xl mt-4"
+				 style="background-image:
+			 url('https://images.unsplash.com/photo-1602722053020-af31042989d5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+				<span class="mask  bg-gradient-info  opacity-6"></span>
+			</div>
+
+			<br><br><br><br><br>
+			<div th:if="${userId == null}" class="row">
+				<div class="col-12">
+					<div class="card my-4">
+						<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+							<div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+								<h6 class="text-white text-capitalize ps-3">Orders</h6>
+							</div>
+						</div>
+
+						<div class="card-body px-0 pb-2">
+							<!-- Search User --><br>
+							<form th:action="@{/employee/orders}" method="GET">
+
+								<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " style="position: absolute;"  id="navbarBlur" data-scroll="true">
+									<div class="container-fluid py-1 px-3">
+										<div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4">
+											<div class="ms-md-auto pe-md-3 d-flex align-items-center">
+												<div class="input-group input-group-outline">
+													<input type="text" placeholder="First Name" id="firstName" name="firstName" th:value="${firstName}" class="form-control">
+												</div>
+												&nbsp;&nbsp;&nbsp;&nbsp;
+												<div class="input-group input-group-outline">
+													<input type="text" id="lastName" name="lastName" th:value="${lastName}" placeholder="Last Name" class="form-control">
+												</div>
+											</div>
+											<input type="submit" value="Search" class="btn btn-outline-primary btn-sm mb-0 me-3" >
+										</div>
+									</div>
+								</nav>
+							</form><br><br><br><br>
+							<!-- End Search User -->
+							<div class="table-responsive  p-0">
+								<table th:if="${users.size() > 0}"  class="table  text-center mb-0">
+									<thead>
+									<tr>
+
+										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">First Name</th>
+										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Last Name</th>
+										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Address</th>
+										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">City</th>
+										<th class="text-secondary opacity-7"></th>
+										<th class="text-secondary opacity-7"></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr  th:each="user : ${users}">
+										<td>
+											<div class="d-flex px-2 py-1">
+												<span th:if="${user.key.role.equals('ROLE_ADMIN')}" >
+													<img src="/Images/me.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="Admin">
+												</span>
+												<span th:if="${user.key.role.equals('ROLE_EMPLOYEE')}">
+													<img src="/Images/employee.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="Employee">
+												</span>
+												<span th:if="${user.key.role.equals('ROLE_USER')}">
+													<img src="/Images/ivana-square.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user">
+												</span>
+
+											</div>
+										</td>
+
+										<td class="align-middle text-center">
+											<span class="text-secondary text-xs font-weight-bold" th:text="${user.key.firstName}" ></span>
+										</td>
+										<td class="align-middle text-center">
+											<span class="text-secondary text-xs font-weight-bold" th:text="${user.key.lastName}" ></span>
+										</td>
+										<td class="align-middle text-center">
+											<span class="text-secondary text-xs font-weight-bold" th:text="${user.key.address}"></span>
+										</td>
+										<td class="align-middle text-center">
+											<span class="text-secondary text-xs font-weight-bold" th:text="${user.key.city}"></span>
+										</td>
+
+										<td class="align-middle ">
+											<form th:action="@{/employee/orders}" method="GET">
+												<input th:if="${user.value == 0}" type="submit" value="Select user" class="btn bg-gradient-success w-60 my-2 mb-2 ">
+												<p th:if="${user.value > 0}" class="align-middle text-primary text-xs  font-weight-bold ">
+													This user has a fine
+												</p>
+												<input type="hidden" th:value="${user.key.userId}" name="userId">
+												<input type="hidden" th:value="${user.value}" name="fine">
+											</form>
+
+										</td>
+										<td class="align-middle">
+											<form th:action="@{/employee/users/showuserinfo}" method="GET">
+												<input type="submit" value="User info" class="btn bg-gradient-warning w-70 my-2  mb-2 ">
+												<input type="hidden" th:value="${user.key.userId}" name="userId">
+												<input type="hidden" th:value="${user.value}" name="fine">
+											</form>
+
+										</td>
+									</tr>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div th:if="${userId != null}" class="row ">
+				<div class="col-10 ms-8">
+					<div class="card my-4">
+						<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+							<div class="bg-gradient-warning shadow-warning opacity-7 border-radius-lg pt-4 pb-3">
+								<h3 class="text-white text-center text-capitalize ps-3">SELECTED USER </h3>
+
+								<h5 class="text-white text-center text-capitalize ps-3" th:text="${user.firstName  + ' ' + user.lastName }"></h5>
+							</div>
+						</div>
+						<div class="card-header mt-4 ms-2 pb-0 p-3">
+							<div class="row">
+								<div class="col-6 d-flex align-items-center">
+									<h6 class="mb-0">User Details</h6>
+								</div>
+								<br><br><br><br>
+							</div>
+						</div>
+						<div class="card-body ms-4  p-3 pb-0">
+							<ul class="list-group">
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="d-flex flex-column">
+										<h6 class="mb-1 text-dark font-weight-bold text-sm">First name</h6>
+										<span class="text-xs" th:text="${user.firstName}"></span>
+									</div>
+
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="d-flex flex-column">
+										<h6 class="mb-1 text-dark font-weight-bold text-sm">Last name</h6>
+										<span class="text-xs" th:text="${user.lastName}"></span>
+									</div>
+
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="d-flex flex-column">
+										<h6 class="mb-1 text-dark font-weight-bold text-sm">Email</h6>
+										<span class="text-xs" th:text="${user.email}"></span>
+									</div>
+
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="d-flex flex-column">
+										<h6 class="mb-1 text-dark font-weight-bold text-sm">Phone Number</h6>
+										<span class="text-xs" th:text="${user.phoneNumber}"></span>
+									</div>
+
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="d-flex flex-column">
+										<h6 class="mb-1 text-dark font-weight-bold text-sm">Address</h6>
+										<span class="text-xs" th:text="${user.Address}"></span>
+									</div>
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="d-flex flex-column">
+										<h6 class="mb-1 text-dark font-weight-bold text-sm">City</h6>
+										<span class="text-xs" th:text="${user.city}"></span>
+									</div>
+								</li>
+							</ul>
+						</div>
+
+						<br><br>
+					</div>
+
+				</div>
+
+			</div><br>
+			<div th:if="${userId != null}" class="row ">
+				<div class="col-10 ms-8">
+					<div class="card my-4">
+						<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+							<div class="bg-gradient-warning opacity-7 shadow-warning border-radius-lg pt-4 pb-3">
+								<h3 class="text-white text-center text-capitalize ps-3">SELECTED BOOK </h3>
+							</div>
+						</div>
+						<div class="card-header mt-4 ms-2 pb-0 ">
+							<div class="row">
+
+								<br><br><br><br>
+								<div th:if="${selectedBookObjects.size() == 0}">
+
+									<h6 class="mb-1 text-primary" >
+										Please Select A Book
+									</h6>
+
+								</div>
+								<div  th:if="${selectedBookObjects.size() > 0}" class="table-responsive  p-0">
+									<table class="table  text-center mb-0">
+										<thead>
+										<tr>
+
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Author</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Release Year</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edition</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Remove from List</th>
+
+										</tr>
+										</thead>
+										<tbody>
+										<tr th:each="book : ${selectedBookObjects}">
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.title}" ></span>
+											</td>
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.author}" ></span>
+											</td>
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.releaseYear}" ></span>
+											</td>
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.edition}"></span>
+											</td>
+
+											<td>
+												<form>
+													<input type="submit" value="Remove" class="btn bg-gradient-danger my-2 mb-2 ">
+													<input type="hidden" th:value="${book.bookId}" name="removeBookId">
+													<input type="hidden" th:value="${user.userId}" name="userId">
+													<input type="hidden" th:value="${title}" name="title">
+													<input type="hidden" th:value="${author}" name="author">
+													<input type="hidden" th:value="${selectedBookIds}" name="selectedBookIdsInString">
+												</form>
+											</td>
+
+
+										</tr>
+
+										</tbody>
+									</table>
+									<div class="ms-9 align-center">
+										<form th:action="@{/employee/confirmorder}" method="GET">
+											<input type="submit" value="Confirm Order" class="btn bg-gradient-success  my-2 mb-2 ">
+											<input type="hidden" th:value="${selectedBookIds}" name="selectedBookIdsInString">
+											<input type="hidden" th:value="${userId}" name="userId">
+
+										</form>
+
+									</div>
+									<br>
+								</div>
+
+
+							</div>
+
+						</div>
+
+
+					</div>
+
+				</div>
+
+			</div>
+			<br>
+			<div th:if="${userId != null}" class="row "></div>
+
+
+
+			<div  th:if="${user != null}" class="col-10 ms-8">
+			<div class="card my-4">
+				<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+					<div class="bg-gradient-warning opacity-7 shadow-warning border-radius-lg pt-4 pb-3">
+						<h3 class="text-white text-center text-capitalize ps-3">BROWSE BOOKS</h3>
+					</div>
+				</div>
+				<div class="card-header mt-4 ms-2 pb-0 ">
+					<div class="row">
+
+						<br><br><br><br><br>
+						<!-- Search User -->
+						<form th:action="@{/employee/orders}" method="GET">
+
+							<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " style="position: absolute;"  id="navbarBlur" data-scroll="true">
+								<div class="container-fluid py-1 px-3">
+									<div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4">
+										<div class="ms-md-auto pe-md-3 d-flex align-items-center">
+											<div class="input-group input-group-outline">
+												<input type="text" placeholder="Title" id="title" name="title" th:value="${title}" class="form-control">
+											</div>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											<div class="input-group input-group-outline">
+												<input type="text" id="author" name="author" th:value="${author}" placeholder="Author" class="form-control">
+											</div>
+										</div>
+										<input type="submit" value="Search" class="btn btn-outline-primary btn-sm mb-0 me-3" >
+										<input type="hidden" th:value="${user.userId}" name="userId">
+										<input type="hidden" th:value="${selectedBookIds}" name="selectedBookIdsInString">
+									</div>
+								</div>
+							</nav>
+						</form><br><br>
+						<!-- End Search User -->
+						<div class="card-body" >
+							<div class="table-responsive   p-0" th:if="${searchedBooks.size() > 0}">
+								<table class="table align-items-center  mb-0">
+									<thead >
+									<tr>
+										<th class=" text-uppercase text-secondary  text-xxs font-weight-bolder opacity-7">Title</th>
+										<th class=" text-uppercase text-secondary text-xxs font-weight-bolder  opacity-7 ps-2">Author</th>
+										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Release Year</th>
+										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Edition</th>
+										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Return Date</th>
+										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Reserved Until</th>
+										<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Select</th>
+									</tr>
+									</thead>
+									<tbody >
+									<tr th:each="searchedBook : ${searchedBooks}">
+										<td>
+											<p class="text-xs font-weight-bold ms-2 mb-0" th:text="${searchedBook.title}"></p>
+										</td>
+										<td>
+											<p class="text-xs font-weight-bold mb-0" th:text="${searchedBook.author}"></p>
+										</td>
+										<td>
+											<p class="text-xs font-weight-bold ms-3 mb-0" th:text="${searchedBook.releaseYear}"></p>
+										</td>
+										<td>
+											<p class="text-xs font-weight-bold  ms-3 mb-0" th:text="${searchedBook.edition}"></p>
+										</td>
+										<td>
+											<p class="text-xs font-weight-bold  ms-2 mb-0" th:text="${searchedBook.returnDate}"></p>
+										</td>
+										<td>
+											<p class="text-xs font-weight-bold mb-0" th:text="${searchedBook.endReservationDate}"></p>
+										</td>
+
+										<td>
+											<div th:if="${searchedBook.reservedByUser != null}">
+
+												<form th:action="@{/employee/orders}" method="GET">
+													<button type="submit"   th:if="${searchedBook.theUser == null && searchedBook.reservedByUser.userId == user.userId}" value="Select"  class="btn bg-gradient-success  my-4 ">Select</button>
+													<input type="hidden" th:value="${user.userId}" name="userId">
+													<input type="hidden" th:value="${title}" name="title">
+													<input type="hidden" th:value="${author}" name="author">
+													<input type="hidden" th:value="${searchedBook.bookId}" name="selectedBookId">
+													<input type="hidden" th:value="${selectedBookIds}" name="selectedBookIdsInString">
+												</form>
+
+												<text class="text-xs font-weight-bold text-danger " th:if="${searchedBook.theUser == null && searchedBook.reservedByUser.userId != user.userId}"> Someone reserved this book.</text>
+											</div>
+											<text  class="text-xs  font-weight-bold text-danger"  th:if="${searchedBook.theUser != null && searchedBook.reservedByUser == null}">Book is still in use.</text>
+											<text  class="text-xs font-weight-bold text-danger" th:if="${searchedBook.theUser != null && searchedBook.reservedByUser != null}">Book is still in use.</text>
+
+
+											<form th:action="@{/employee/orders}" method="GET">
+												<button type="submit" th:if="${searchedBook.theUser == null && searchedBook.reservedByUser == null}"  value="Select"  class="btn bg-gradient-success  my-4 ">Select</button>
+												<input type="hidden" th:value="${user.userId}" name="userId">
+												<input type="hidden" th:value="${title}" name="title">
+												<input type="hidden" th:value="${author}" name="author">
+												<input type="hidden" th:value="${searchedBook.bookId}" name="selectedBookId">
+												<input type="hidden" th:value="${selectedBookIds}" name="selectedBookIdsInString">
+											</form>
+										</td>
+
+
+
+									</tr>
+
+									</tbody>
+								</table>
+								<br>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+
+			</div>
+
+		</div>
+
+
+			<br><br>
+		</div>
+	</div>
+
+
+
+		
+
+</body>
+</html>

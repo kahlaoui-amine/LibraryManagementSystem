@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Confirm order</title>
+<link rel="stylesheet" type="text/css" th:href="@{/CSS/material-dashboard.css}">
+</head>
+<body>
+
+<main class="main-content  mt-0">
+	<div class="page-header align-items-start min-vh-100" style="background-image: url('/Images/data.jpg');">
+		<span class="mask bg-gradient-dark opacity-6"></span>
+		<div class="container my-auto">
+			<div class="row">
+				<div class="col-lg-12 col-10 mx-auto">
+					<div class="card z-index-0 fadeIn3 fadeInBottom">
+						<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+							<div class="bg-gradient-warning shadow-warning border-radius-lg py-3 pe-1">
+								<h5 class="text-white font-weight-bold text-center mt-2 mb-0">Confirm Order</h5>
+							</div>
+						</div>									<br><br>
+						<h3 class="text-center text-primary">SELECTED USER </h3>
+						<br>
+						<div class="table-responsive p-0 ms-6">
+							<table class="table align-items-center mb-0">
+								<thead>
+								<tr>
+									<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User</th>
+
+
+									<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Adress</th>
+
+									<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">City</th>
+									<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phone Number</th>
+
+								</tr>
+								</thead>
+								<tbody>
+								<tr  >
+									<td>
+										<div class="d-flex px-2 py-1">
+												<span th:if="${user.role.equals('ROLE_ADMIN')}" >
+													<img src="/Images/me.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="Admin">
+												</span>
+											<span th:if="${user.role.equals('ROLE_EMPLOYEE')}">
+													<img src="/Images/employee.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="Employee">
+												</span>
+											<span th:if="${user.role.equals('ROLE_USER')}">
+													<img src="/Images/ivana-square.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user">
+												</span>
+											<div class="d-flex flex-column justify-content-center">
+												<h6 class="mb-0 text-sm" th:text="${user.firstName  + ' ' + user.lastName }" ></h6>
+												<p class="text-xs text-secondary mb-0" th:text="${user.email}"></p>
+											</div>
+										</div>
+									</td>
+									<td class="align-middle text-center">
+										<span class="text-secondary text-xs font-weight-bold" th:text="${user.address}" ></span>
+									</td>
+									<td class="align-middle text-center">
+										<span class="text-secondary text-xs font-weight-bold" th:text="${user.City}"></span>
+									</td>
+									<td class="align-middle text-center">
+										<span class="text-secondary text-xs font-weight-bold" th:text="${user.phoneNumber}"></span>
+									</td>
+
+								</tr>
+
+								</tbody>
+							</table>
+						</div>
+						<br><br><br>
+						<h3 class="text-center text-primary">SELECTED BOOK </h3>
+						<br><br>
+						<div class="table-responsive p-0 ms-6">
+							<table  class="table align-items-center mb-0">
+								<thead>
+								<tr>
+									<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+									<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Author</th>
+									<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Release Year</th>
+									<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edition</th>
+
+								</tr>
+								</thead>
+								<tbody>
+								<tr th:each="book : ${selectedBooks}" >
+									<td class="align-middle text-center">
+										<span class="text-secondary text-xs font-weight-bold" th:text="${book.title}" ></span>
+									</td>
+									<td class="align-middle text-center">
+										<span class="text-secondary text-xs font-weight-bold" th:text="${book.author}" ></span>
+									</td>
+									<td class="align-middle text-center">
+										<span class="text-secondary text-xs font-weight-bold" th:text="${book.releaseYear}"></span>
+									</td>
+									<td class="align-middle text-center">
+										<span class="text-secondary text-xs font-weight-bold" th:text="${book.edition}"></span>
+									</td>
+
+								</tr>
+
+								</tbody>
+							</table>
+						</div>
+
+						<div class="card-body ms-12 text-center">
+
+							<div class="row justify-content-center">
+
+								<table >
+									<tr >
+										<td>
+											<form th:action="@{/employee/saveorder}" th:method="PUT">
+												<button type="submit" value="Login" class="btn bg-gradient-success   ">CONFIRM </button><br>
+												<input type="hidden" th:name="_method" th:value="PUT">
+												<input type="hidden" th:value="${selectedBookIds}" name="selectedBookIdsInString">
+												<input type="hidden" th:value="${user.userId}" name="userId">
+											</form>
+										</td>
+
+
+										<td>
+											<form th:action="@{/employee/orders}" method="GET">
+												<button type="submit"  value="Cancel" class="btn bg-gradient-danger  me-8 mb-4">Cancel</button>
+												<input type="hidden" th:value="${selectedBookIds}" name="selectedBookIdsInString">
+												<input type="hidden" th:value="${user.userId}" name="userId">
+											</form>
+										</td>
+									</tr>
+								</table><br><br>
+
+							</div><br>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<br><br>
+		</div>
+
+	</div>
+</main>
+
+
+</body>
+</html>

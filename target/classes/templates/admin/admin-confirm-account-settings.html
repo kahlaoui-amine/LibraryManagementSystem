@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Confirm Account Changes</title>
+
+<link rel="stylesheet" type="text/css" th:href="@{/CSS/material-dashboard.css}">
+</head>
+<body>
+<ul th:replace="page-layout :: adminNavBar"></ul>
+<div class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+	<div class="container-fluid px-2 px-md-4">
+		<div class="page-header min-height-300 border-radius-xl mt-4"
+			 style="background-image:
+			 url('https://images.unsplash.com/photo-1602722053020-af31042989d5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+			<span class="mask  bg-gradient-info  opacity-6"></span>
+		</div>
+
+		<br><br><br><br><br>
+
+		<div class="row ">
+			<div class="col-10 ms-8">
+				<div class="card my-4">
+					<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+						<div class="bg-gradient-warning shadow-warning border-radius-lg pt-4 pb-3">
+							<h3 class="text-white text-center text-capitalize ps-3">Confirm account settings</h3>
+
+							<h5 class="text-white text-center text-capitalize ps-3" th:text="${user.firstName  + ' ' + user.lastName }"></h5>
+						</div>
+					</div>
+					<div class="card-header mt-4 ms-6 pb-0 p-3">
+						<div class="row">
+							<div class="col-6 d-flex align-items-center">
+								<h6 class="mb-0">Acount Details</h6>
+							</div>
+
+
+						</div>
+					</div>
+					<div class="card-body ms-7  p-3 pb-0">
+						<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+							<div class="d-flex flex-column">
+								<h6 class="mb-1 text-dark font-weight-bold text-sm">UserName</h6>
+								<span class="text-xs" th:text="${user.userName}"></span>
+							</div>
+
+						</li>
+						<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+							<div class="d-flex flex-column">
+								<h6 class="mb-1 text-dark font-weight-bold text-sm">First name</h6>
+								<span class="text-xs" th:text="${user.firstName}"></span>
+							</div>
+
+						</li>
+						<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+							<div class="d-flex flex-column">
+								<h6 class="mb-1 text-dark font-weight-bold text-sm">Last name</h6>
+								<span class="text-xs" th:text="${user.lastName}"></span>
+							</div>
+
+						</li>
+						<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+							<div class="d-flex flex-column">
+								<h6 class="mb-1 text-dark font-weight-bold text-sm">Account Availability</h6>
+								<span class="text-xs" th:text="${accStatus}"></span>
+							</div>
+
+						</li>
+						<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+							<div class="d-flex flex-column">
+								<h6 class="mb-1 text-dark font-weight-bold text-sm">Role</h6>
+								<span class="text-xs" th:text="${role}"></span>
+							</div>
+
+						</li>
+						<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+							<div class="d-flex flex-column">
+								<br>
+								<table class="col-5 ms-8 text-end">
+									<tr>
+										<td>
+											<div class="col-5 ms-8 text-end">
+											<form th:action="@{/admin/saveaccountsettings}" th:method="PUT">
+												<input class="btn btn-outline-success"  type="submit" value="Confirm">
+												<input type="hidden" th:value="${user.userId}" name="userId">
+												<input type="hidden" th:value="${accStatus}" name="accStatus">
+												<input type="hidden" th:value="${role}" name="role">
+												<input type="hidden" th:value="PUT" th:name="_method">
+											</form>
+										</div>
+										</td>
+										<td class="ms-8 ">&nbsp; </td>
+										<td>
+											<div class="col-5 text-center">
+											<form th:action="@{/admin/manageaccount}" th:method="get">
+												<input type="hidden" th:value="${user.userId}" name="userId">
+												<input class="btn btn-outline-danger" type="submit" value="cancel" >
+											</form>
+										</div>
+										</td>
+
+									</tr>
+								</table>
+
+
+								<br>
+							</div>
+
+						</li>
+
+					</div>
+
+
+
+
+
+
+
+
+
+
+					</div>
+				</div>
+
+
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="container">
+
+
+		
+
+		
+
+
+	
+		<div class="row">
+			<div class="col-50">
+				<form th:action="@{/admin/saveaccountsettings}" th:method="PUT">
+					<input type="submit" value="Confirm">
+					<input type="hidden" th:value="${user.userId}" name="userId">
+					<input type="hidden" th:value="${accStatus}" name="accStatus">
+					<input type="hidden" th:value="${role}" name="role">
+					<input type="hidden" th:value="PUT" th:name="_method">
+				</form>
+			</div>
+			<div class="col-50">	
+				<form th:action="@{/admin/manageaccount}" th:method="get">
+					<input type="hidden" th:value="${user.userId}" name="userId">
+					<input type="submit" value="cancel" style="background-color: red">
+				</form>
+			</div>
+		</div>	
+	</div>
+
+</body>
+</html>

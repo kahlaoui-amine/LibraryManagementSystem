@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Set Reservation to Ready For Pick-Up</title>
+<link rel="stylesheet" type="text/css" th:href="@{/CSS/material-dashboard.css}">
+</head>
+
+<body>
+<main class="main-content  mt-0">
+	<div class="page-header align-items-start min-vh-100" style="background-image: url('/Images/data.jpg');">
+		<span class="mask bg-gradient-dark opacity-6"></span>
+		<div class="container my-auto">
+			<div class="row">
+				<div class=" col-10 mx-auto">
+					<div class="card z-index-0 fadeIn3 fadeInBottom">
+						<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+							<div class="bg-gradient-warning shadow-warning border-radius-lg py-3 pe-1">
+								<h5 class="text-white font-weight-bold text-center mt-2 mb-0">Set book reservation to ready for pick-up</h5>
+							</div>
+						</div>									<br>
+
+						<div class="card-body ">
+							<p class="text-center text-primary font-weight-bold">Are you sure?</p>
+
+							<p class="text-center">You are about to set this book's status to ready for pick-up</p>
+
+							<div class="card-body" >
+								<div >
+									<table class="table align-items-center  mb-0">
+										<thead >
+										<tr>
+
+											<th class="  text-uppercase text-secondary  text-xxs font-weight-bolder  opacity-7">Title</th>
+
+											<th class=" text-uppercase text-secondary text-xxs font-weight-bolder ms-8 opacity-7 ps-2">Author</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Release Year</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Edition</th>
+
+										</tr>
+										</thead>
+										<tbody >
+										<tr  >
+											<td>
+												<p class="text-xs font-weight-bold ms-2 mb-0" th:text="${book.title}"></p>
+											</td>
+											<td>
+												<p class="text-xs font-weight-bold mb-0" th:text="${book.author}"></p>
+											</td>
+											<td>
+												<p class="text-xs font-weight-bold ms-3 mb-0" th:text="${book.releaseYear}"></p>
+											</td>
+											<td>
+												<p class="text-xs font-weight-bold  ms-3 mb-0" th:text="${book.edition}"></p>
+											</td>
+
+										</tr>
+
+										</tbody>
+									</table>
+									<br>
+								</div>
+							</div>
+
+							<p class="text-center">
+								<b><text  class=" text-primary " th:text="${user.firstName + ' ' + user.lastName}"></b>
+
+								will receive a notification.
+
+
+							</p>
+							<table class="ms-12">
+								<tr>
+									<td  >
+										<form th:action="@{/employee/updatebookreservation}" th:method="PUT">
+											<button type="submit"  value="Yes" class="btn bg-gradient-success   mb-0">Yes</button><br>
+											<input type="hidden" th:name="_method" th:value="PUT">
+											<input type="hidden" th:name="bookId" th:value="${book.bookId}">
+											<input type="hidden" th:name="userId" th:value="${user.userId}">
+										</form>
+									</td>
+
+									<td class="ms-12">
+
+											<form class="ms-12" th:action="@{/employee/reservations}" method="GET">
+												&nbsp;
+												&nbsp;
+												&nbsp;
+												&nbsp;<button type="submit"  value="No" class="btn bg-gradient-danger  mb-0">No</button><br>
+											</form>
+
+									</td>
+								</tr>
+
+							</table>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</main>
+
+
+</body>
+</html>

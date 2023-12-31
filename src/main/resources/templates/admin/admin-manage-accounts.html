@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+<meta charset="ISO-8859-1">
+<title>Manage accounts</title>
+	<link id="pagestyle" rel="stylesheet" th:href="@{/CSS/material-dashboard.css}">
+
+</head>
+<body>
+	<ul th:replace="page-layout :: adminNavBar"></ul>
+
+	<div class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+		<div class="container-fluid px-2 px-md-4">
+			<div class="page-header min-height-300 border-radius-xl mt-4"
+				 style="background-image:
+			 url('https://images.unsplash.com/photo-1602722053020-af31042989d5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+				<span class="mask  bg-gradient-info  opacity-6"></span>
+			</div>
+
+			<br><br><br><br><br>
+			<div class="row">
+				<div class="col-12">
+					<div class="card my-4">
+						<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+							<div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+								<h6 class="text-white text-capitalize ps-3">Manage Accounts</h6>
+							</div>
+						</div>
+
+						<div class="card-body px-0 pb-2">
+							<!-- Search User --><br>
+								<form th:action="@{/admin/manageaccounts}" method="GET">
+
+									<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " style="position: absolute;"  id="navbarBlur" data-scroll="true">
+										<div class="container-fluid py-1 px-3">
+											<div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4">
+												<div class="ms-md-auto pe-md-3 d-flex align-items-center">
+													<div class="input-group input-group-outline">
+														<input type="text" placeholder="First Name" id="firstName" name="firstName" th:value="${firstName}" class="form-control">
+													</div>
+													&nbsp;&nbsp;&nbsp;&nbsp;
+													<div class="input-group input-group-outline">
+														<input type="text" id="lastName" name="lastName" th:value="${lastName}" placeholder="Last Name" class="form-control">
+													</div>
+												</div>
+														<input type="submit" value="Search" class="btn btn-outline-primary btn-sm mb-0 me-3" >
+											</div>
+										</div>
+									</nav>
+								</form><br><br><br><br>
+							<!-- End Search User -->
+							<div class="row">
+
+							</div>
+							<div class="table-responsive p-0">
+								<table th:if="${users.size > 0}" id="tablestyle" class="table align-items-center mb-0">
+									<thead>
+									<tr>
+										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User</th>
+										<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Role</th>
+
+										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">UserName</th>
+
+										<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Adress</th>
+
+										<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">City</th>
+										<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phone Number</th>
+
+										<th class="text-secondary opacity-7"></th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr  th:each="user : ${users}">
+										<td>
+											<div class="d-flex px-2 py-1">
+												<span th:if="${user.role.equals('ROLE_ADMIN')}" >
+													<img src="/Images/me.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="Admin">
+												</span>
+												<span th:if="${user.role.equals('ROLE_EMPLOYEE')}">
+													<img src="/Images/employee.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="Employee">
+												</span>
+												<span th:if="${user.role.equals('ROLE_USER')}">
+													<img src="/Images/ivana-square.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user">
+												</span>
+												<div class="d-flex flex-column justify-content-center">
+													<h6 class="mb-0 text-sm" th:text="${user.firstName  + ' ' + user.lastName }" ></h6>
+													<p class="text-xs text-secondary mb-0" th:text="${user.email}"></p>
+												</div>
+											</div>
+										</td>
+										<td class="align-middle text-center text-sm">
+
+											<span class="badge badge-sm bg-gradient-danger" th:if="${user.role.equals('ROLE_ADMIN')}">ADMIN</span>
+
+											<span class="badge badge-sm bg-gradient-success" th:if="${user.role.equals('ROLE_EMPLOYEE')}">EMPLOYEE</span>
+
+											<span class="badge badge-sm bg-gradient-info" th:if="${user.role.equals('ROLE_USER')}">USER</span>
+										</td>
+										<td>
+											<p th:text="${user.userName}" class="text-xs font-weight-bold mb-0"></p>
+										</td>
+										<td class="align-middle text-center">
+											<span class="text-secondary text-xs font-weight-bold" th:text="${user.address}" ></span>
+										</td>
+										<td class="align-middle text-center">
+											<span class="text-secondary text-xs font-weight-bold" th:text="${user.City}"></span>
+										</td>
+										<td class="align-middle text-center">
+											<span class="text-secondary text-xs font-weight-bold" th:text="${user.phoneNumber}"></span>
+										</td>
+
+										<td class="align-middle">
+											<form th:action="@{/admin/manageaccount}" method="GET">
+												<input type="submit" value="Edit" class="btn bg-gradient-warning w-60 my-2 mb-2 ">
+												<input type="hidden" th:value="${user.userId}" name="userId">
+											</form>
+
+										</td>
+									</tr>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+
+</body>
+</html>

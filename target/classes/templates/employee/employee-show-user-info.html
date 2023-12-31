@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Show User Info</title>
+<link rel="stylesheet" type="text/css" th:href="@{/CSS/material-dashboard.css}">
+</head>
+<body>
+	<ul th:replace="page-layout :: employeeNavBar"></ul>
+
+	<div class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+		<div class="container-fluid px-2 px-md-4">
+			<div class="page-header min-height-300 border-radius-xl mt-4"
+				 style="background-image:
+			 url('https://images.unsplash.com/photo-1602722053020-af31042989d5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+				<span class="mask  bg-gradient-info  opacity-6"></span>
+			</div>
+
+			<br><br><br><br><br>
+
+			<div class="row ">
+				<div class="col-10 ms-8">
+					<div class="card my-4">
+						<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+							<div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+								<h3 class="text-white text-center text-capitalize ps-3">USER INFO</h3>
+
+								<h5 class="text-white text-center text-capitalize ps-3" th:text="${user.firstName  + ' ' + user.lastName }"></h5>
+							</div>
+						</div>
+						<div class="card-header mt-4 ms-2 pb-0 p-3">
+							<div class="row">
+								<div class="col-6 d-flex align-items-center">
+									<h6 class="mb-0">User Details</h6>
+								</div>
+								<br><br><br><br>
+
+							</div>
+						</div>
+						<div class="card-body ms-4  p-3 pb-0">
+							<ul class="list-group">
+
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="d-flex flex-column">
+										<h6 class="mb-1 text-dark font-weight-bold text-sm">First name</h6>
+										<span class="text-xs" th:text="${user.firstName}"></span>
+									</div>
+
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="d-flex flex-column">
+										<h6 class="mb-1 text-dark font-weight-bold text-sm">Last name</h6>
+										<span class="text-xs" th:text="${user.lastName}"></span>
+									</div>
+
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="d-flex flex-column">
+										<h6 class="mb-1 text-dark font-weight-bold text-sm">Email</h6>
+										<span class="text-xs" th:text="${user.email}"></span>
+									</div>
+
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="d-flex flex-column">
+										<h6 class="mb-1 text-dark font-weight-bold text-sm">Phone Number</h6>
+										<span class="text-xs" th:text="${user.phoneNumber}"></span>
+									</div>
+
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="d-flex flex-column">
+										<h6 class="mb-1 text-dark font-weight-bold text-sm">Address</h6>
+										<span class="text-xs" th:text="${user.Address}"></span>
+									</div>
+
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="d-flex flex-column">
+										<h6 class="mb-1 text-dark font-weight-bold text-sm">City</h6>
+										<span class="text-xs" th:text="${user.city}"></span>
+									</div>
+
+								</li>
+								<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+									<div class="d-flex flex-column">
+										<h6 class="mb-1 text-dark font-weight-bold text-sm">Total</h6>
+										<span class="text-xs text-primary" th:if="${fine > 0}" th:text="${fine +' DT'}"></span>
+										<span class="text-xs" th:if="${fine == 0}" th:text="${fine +' DT'}"></span>
+
+
+
+									</div>
+
+								</li>
+
+
+
+
+							</ul>
+						</div>
+						<div class="card-header mt-4 ms-2 pb-0 ">
+							<div class="row">
+								<div class="col-6 d-flex align-items-center">
+									<h6 class="mb-0">Books In Use</h6>
+								</div>
+								<br><br><br><br>
+								<div th:if="${user.books.size() == 0}">
+
+									<h6 class="mb-1" style="color: #0d6efd" >
+										There are no Books In Use.
+									</h6>
+
+								</div>
+								<div class="table-responsive  p-0">
+									<table th:if="${user.books.size() > 0}"  class="table  text-center mb-0">
+										<thead>
+										<tr>
+
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Author</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Release Year</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edition</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Return Date</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fine</th>
+											<th class="text-secondary opacity-7"></th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr  th:each="book : ${booksInUse}">
+
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.key.title}" ></span>
+											</td>
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.key.author}" ></span>
+											</td>
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.key.releaseYear}" ></span>
+											</td>
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.key.edition}"></span>
+											</td>
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.key.returnDate}"></span>
+											</td>
+											<td class="align-middle text-center">
+
+												<span th:if="${book.value > 0}" th:text="${ book.value +' DT'}" class="text-primary text-xs font-weight-bold"></span>
+												<span th:if="${book.value ==  0}" th:text="${book.value +' DT'}" class="text-secondary text-xs font-weight-bold"></span>
+											</td>
+
+
+										</tr>
+
+										</tbody>
+									</table>
+								</div>
+
+
+							</div>
+							<div class="row">
+								<div class="col-6 d-flex align-items-center">
+									<h6 class="mb-0">Reserved Books</h6>
+								</div>
+								<br><br><br><br>
+								<div th:if="${user.reservedBooks.size() == 0}">
+									<h6 class="mb-1" style="color: #0d6efd" >
+										There are  No books Reserved
+									</h6>
+
+								</div>
+								<div class="table-responsive  p-0">
+									<table th:if="${user.reservedBooks.size() > 0}"  class="table  text-center mb-0">
+										<thead>
+										<tr>
+
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Author</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Release Year</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edition</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Reserved From</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Reserved Until</th>
+											<th class="text-secondary opacity-7"></th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr  th:each="book : ${user.reservedBooks}">
+
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.title}" ></span>
+											</td>
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.author}" ></span>
+											</td>
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.releaseYear}" ></span>
+											</td>
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.edition}" ></span>
+											</td>
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.startReservationDate}"></span>
+											</td>
+											<td class="align-middle text-center">
+												<span class="text-secondary text-xs font-weight-bold" th:text="${book.endReservationDate}"></span>
+											</td>
+
+
+
+										</tr>
+
+										</tbody>
+									</table>
+								</div>
+
+
+							</div>
+						</div>
+						<br><br>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

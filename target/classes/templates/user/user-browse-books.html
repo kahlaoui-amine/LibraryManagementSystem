@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Browse Books</title>
+
+	<link id="pagestyle" rel="stylesheet" th:href="@{/CSS/material-dashboard.css}">
+
+</head>
+<body>
+<ul th:replace="page-layout :: userNavBar"></ul>
+
+<div class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+	<div class="container-fluid px-2 px-md-4">
+		<div class="page-header min-height-300 border-radius-xl mt-4"
+			 style="background-image:
+			 url('https://images.unsplash.com/photo-1602722053020-af31042989d5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+			<span class="mask  bg-gradient-info  opacity-6"></span>
+		</div>
+
+		<br><br>
+		<div class="row">
+			<div class="col-12">
+				<div class="card my-4">
+					<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+						<div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+							<h6 class="text-white text-capitalize ps-3">Make reservation</h6>
+						</div>
+					</div>
+
+					<div class="col-auto mb-5 my-auto">
+						<div class="h-100" >
+
+							<div th:if="${listedBookReservations.size() == 0}">
+								<h6 class=" ms-4 mt-5" style="color: #0d6efd" >
+									Select books to make a reservation.
+								</h6></div>
+
+						</div>
+						<div class="card-body px-0 ms-3 pb-2">
+							<div class="table-responsive p-0">
+
+								<table th:if="${listedBookReservations.size() != 0}" class="table align-items-center  mb-0" id="tablestyle" >
+
+									<thead>
+									<tr>
+										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+
+										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">Author</th>
+
+										<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Release Year</th>
+
+										<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edition</th>
+										<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Reservation Periodr</th>
+
+										<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder  opacity-7"></th>
+										<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder  opacity-7"></th>
+
+									</tr><br>
+									</thead>
+									<tbody >
+
+									<tr th:each="resBook : ${listedBookReservations}">
+										<td>
+											<p class="text-xs font-weight-bold ms-2 mb-0" th:text="${resBook.key.title}"></p>
+										</td>
+										<td>
+											<p class="text-xs font-weight-bold mb-0" th:text="${resBook.key.author}"></p>
+										</td>
+										<td>
+											<p class="text-xs font-weight-bold ms-8 mb-0" th:text="${resBook.key.releaseYear}"></p>
+										</td>
+										<td>
+											<p class="text-xs font-weight-bold ms-7 mb-0" th:text="${resBook.key.edition}"></p>
+										</td>
+										<td>
+											<p class="text-xs font-weight-bold ms-10 mb-0" th:text="${resBook.value}"></p>
+										</td>
+										<td >
+											<form action="/user/browsebooks">
+												<button type="submit"  value="Login" class="btn bg-gradient-danger w-60 my-2  mb-2 ">Remove</button><br>
+												<input type="hidden" th:value="${reservedBookIds}" th:name="reservedBookIdsInString">
+												<input type="hidden" th:value="${resBook.key.bookId}" th:name="removeBookId">
+												<input th:if="${title != null}" th:value="${title}" name="title" type="hidden">
+												<input th:if="${author != null}" th:value="${author}" name="author" type="hidden">
+												<input th:if="${showAllBooks !=null}" type="hidden" value="Show all books" name="showAllBooks">
+											</form>
+										</td>
+									</tr>
+
+									</tbody>
+
+								</table>
+
+
+							</div>
+
+							<div class="ms-5" th:if="${listedBookReservations.size() > 0}">
+								<br><br>
+								<p class=" font-weight-bold">
+									Please note that reserving a book doesn't mean you can pick it up right away.
+								</p>
+
+								<p class=" font-weight-bold">
+									You will receive a notification on this account when an employee of the library has put it aside for you.
+								</p>
+
+								<p class=" font-weight-bold">
+									It could also happen that the current user of a book doesn't return the book in time, which will result in an expired reservation.
+								</p>
+								<p class=" font-weight-bold">
+									In that case your reservation will be <strong style="color: red">canceled</strong>.
+								</p>
+								<form th:action="@{/user/browsebooks/payreservation}" th:method="PUT">
+									<div class="">
+										<button type="submit"  value="Login" class="btn bg-gradient-success  my-4 mb-0">Reserve books</button><br>
+										<input type="hidden" th:name="_method" th:value="PUT">
+										<input type="hidden" th:value="${reservedBookIds}" th:name="reservedBookIdsInString">
+										<input type="hidden" th:value="${listedBookReservations.size()}" th:name="amountToPay">
+									</div>
+								</form>
+								<br>
+								<div class="col-50">
+									<p>Total order: <text th:text="${'$ ' + listedBookReservations.size() + ',-'}"></text></p>
+								</div>
+
+							</div>
+							</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<div class="card my-4">
+					<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+						<div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+							<h6 class="text-white text-capitalize ps-3">Books</h6>
+						</div>
+					</div>
+
+					<div class="card-body px-0 pb-2">
+						<!-- Search User --><br>
+						<form th:action="@{/user/browsebooks}" method="GET">
+
+							<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " style="position: absolute;"  id="navbarBlur" data-scroll="true">
+								<div class="container-fluid py-1 px-3">
+									<div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4">
+										<div class="ms-md-auto pe-md-3 d-flex align-items-center">
+											<div class="input-group input-group-outline">
+												<input type="text" placeholder="Title" id="title" name="title" th:value="${title}" class="form-control">
+											</div>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											<div class="input-group input-group-outline">
+												<input type="text" id="author" name="author" th:value="${author}" placeholder="Author" class="form-control">
+											</div>
+										</div>
+										<input type="submit" value="Search" class="btn btn-outline-primary btn-sm mb-0 me-3" >
+									</div>
+								</div>
+							</nav>
+						</form><br><br>
+						<!-- End Search User -->
+					</div>
+					<div class="table-responsive ms-3 me-3 p-0">
+						<br><br>
+						<table th:if="${books.size() > 0}" id="tablestyle" class="table align-items-center mb-0">
+							<thead>
+							<tr>
+
+								<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Author</th>
+
+								<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">Release Year</th>
+
+								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edition</th>
+
+								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Return Date</th>
+								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">End Reservation Date</th>
+
+								<th class="text-secondary opacity-7"></th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr  th:each="book : ${books}">
+								<td class="align-middle ">
+									<span class="text-secondary text-xs font-weight-bold" th:text="${book.title}" ></span>
+								</td>
+								<td class="align-middle text-center">
+									<span class="text-secondary text-xs font-weight-bold" th:text="${book.author}" ></span>
+								</td>
+								<td class="align-middle text-center">
+									<span class="text-secondary text-xs font-weight-bold" th:text="${book.releaseYear}" ></span>
+								</td>
+								<td class="align-middle text-center">
+									<span class="text-secondary text-xs font-weight-bold" th:text="${book.edition}"></span>
+								</td>
+								<td class="align-middle text-center">
+									<span class="text-secondary text-xs font-weight-bold" th:text="${book.returnDate}"></span>
+								</td>
+								<td class="align-middle text-center">
+									<span class="text-secondary text-xs font-weight-bold" th:text="${book.endReservationDate}"></span>
+								</td>
+
+								<td class="align-middle" th:if="${book.endReservationDate == null && userHasFine == false}">
+									<form>
+										<input type="submit" value="Reserve book" class="btn bg-gradient-warning  my-2 mb-2 ">
+										<input type="hidden" th:value="${book.bookId}" th:name="reservedBookId">
+										<input type="hidden" th:value="${reservedBookIds}" th:name="reservedBookIdsInString">
+
+										<input th:if="${title != null}" th:value="${title}" name="title" type="hidden">
+										<input th:if="${author != null}" th:value="${author}" name="author" type="hidden">
+										<input th:if="${showAllBooks !=null}" type="hidden" value="Show all books" name="showAllBooks">
+									</form>
+								</td>
+
+								<td th:if="${userHasFine}" class="align-middle text-center">
+									<span class="text-secondary text-xs font-weight-bold" > Not possible, reserving is blocked because you have a fine.</span>
+								</td>
+								<td th:if="${book.endReservationDate != null && userHasFine == false}" class="align-middle text-center">
+									<span class="text-secondary text-xs font-weight-bold" >
+										<div>Not possible,</div>
+										<div> book is already reserved</div>
+									</span>
+								</td>
+
+							</tr>
+
+							</tbody>
+						</table>
+					</div>
+						<br><br>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+		
+
+		
+		
+
+</body>
+</html>

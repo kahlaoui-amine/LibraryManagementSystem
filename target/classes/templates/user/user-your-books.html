@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Your Books</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/material-dashboard.css}">
+</head>
+<body>
+	<ul th:replace="page-layout :: userNavBar"></ul>
+	<div class="main-content position-relative max-height-vh-100 h-100">
+		<div class="container-fluid px-2 px-md-4">
+			<div class="page-header min-height-300 border-radius-xl mt-4"
+				 style="background-image:
+			 url('https://images.unsplash.com/photo-1602722053020-af31042989d5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+				<span class="mask  bg-gradient-info  opacity-6"></span>
+			</div>
+
+			<br><br><br><br><br>
+
+			<div class="row">
+				<div class="card card-body mx-3 mx-md-4 mt-n6">
+					<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+						<div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+							<h3 class="text-white text-capitalize ps-3">MY Books</h3>
+						</div>
+					</div>
+					<br><br>
+					<div class="row gx-4 mb-2 ms-4">
+
+						<div class="col-auto my-auto">
+							<div class="h-100" >
+								<div th:if="${books.size() == 0}">
+
+								<h6 class="mb-1" style="color: #0d6efd" >
+									You don't have any books in use.
+								</h6>
+								</div>
+							</div>
+						</div>
+						<table th:if="${books.size > 0}" class="table align-items-center ms-1 mb-0">
+							<thead>
+							<tr>
+								<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+								<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Author</th>
+								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Release Year</th>
+								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edition</th>
+								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fine</th>
+								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Times Extended</th>
+								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Return Date</th>
+								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Extend</th>
+								<th class="text-secondary opacity-7"></th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr th:each="book : ${books}">
+								<td>
+									<p th:text="${book.key.title}" class="text-xs font-weight-bold ms-2 mb-0"></p>
+								</td>
+								<td>
+									<p class="text-xs font-weight-bold mb-0" th:text="${book.key.author}"></p>
+								</td>
+								<td class="align-middle text-center">
+									<span class="text-secondary text-xs font-weight-bold" th:text="${book.key.releaseYear}"></span>
+								</td>
+								<td class="align-middle text-center">
+									<span class="text-secondary text-xs font-weight-bold" th:text="${book.key.edition}"></span>
+								</td>
+								<td class="align-middle text-center">
+									<p class="text-xs font-weight-bold mb-0 opacity-9" th:if="${book.value > 0}" style="color:red" th:text="${ book.value +'  DT' }"></p>
+								</td>
+								<td class="align-middle text-center">
+									<span class="text-secondary text-xs font-weight-bold" th:text="${book.key.timesExtended}"> </span>
+								</td>
+								<td class="align-middle text-center">
+									<span class="text-secondary text-xs font-weight-bold" th:text="${book.key.returnDate}"></span>
+								</td>
+								<td class="align-middle text-center text-sm">
+
+										<form th:action="@{/user/yourbooks/extend}" th:method="POST">
+											<button type="submit"  value="Login" class="btn bg-gradient-warning mt-3">Extend by one week</button><br>
+											<input type="hidden" th:value="${book.key.bookId}"name="bookId">
+											<input type="hidden" th:value="${book.value}" name="fineAmount">
+											<input type="hidden" th:name="_method" th:value="PUT">
+											<input type="hidden" th:name="weeksToExtend" th:value="1">
+										</form>
+
+								</td>
+
+							</tr>
+
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

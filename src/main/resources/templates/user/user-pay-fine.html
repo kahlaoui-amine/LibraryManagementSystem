@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Pay fine</title>
+
+<link rel="stylesheet" type="text/css" th:href="@{/CSS/material-dashboard.css}">
+</head>
+<body>
+
+<main class="main-content  mt-0">
+	<div class="page-header align-items-start min-vh-100" style="background-image: url('/Images/payment.jpg');">
+		<span class="mask bg-gradient-dark opacity-6"></span>
+		<div class="container my-auto">
+			<div class="row">
+				<div class="col-lg-12 col-12 mx-auto">
+					<div class="card z-index-0 fadeIn3 fadeInBottom">
+						<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+							<div class="bg-gradient-warning shadow-warning border-radius-lg py-3 pe-1">
+								<h5 class="text-white font-weight-bold text-center mt-2 mb-0">Extend Book Browsing</h5>
+							</div>
+						</div>									<br>
+
+						<div class="card-body text-center">
+
+
+
+
+								<div class="card-body ms-3">
+									<div class="table-responsive ">
+										<table class="table ">
+											<thead>
+											<tr>
+												<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Title</th>
+
+												<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Author</th>
+
+
+											</tr>
+											</thead>
+											<tbody>
+											<tr>
+												<td>
+													<p class="text-xs font-weight-bold ms-2 mb-0" th:text="${book.title}"></p>
+												</td>
+												<td>
+													<p class="text-xs font-weight-bold mb-0" th:text="${book.author}"></p>
+												</td>
+
+											</tr>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<p class="text-justify font-weight-bolder text-s"><br/><br/>
+									You are trying to extend the return date of a book that should have been returned to the library on <b><text th:text="${book.returnDate}"/></b>.
+									Since it wasn't extended or returned on time, a fine has built-up of <b>$ <text th:text="${fine}"/></b>. The return date for the book
+									can be extended when the fine is paid. The original return date will be extended by <b><text th:text="${weeksToExtend}"/></b> week(s).
+									<br/><br/></p>
+
+								<div class="row justify-content-center">
+
+									<table >
+										<tr >
+											<td>
+												<form th:action="@{/user/yourbooks/dopayment}" method="POST">
+													<button type="submit"  value="Login" class="btn bg-gradient-success ms-3 my-4 mb-0">Pay fine </button><br>
+													<input type="hidden" th:name="fineAmount" th:value="${fine}">
+													<input type="hidden" th:name="weeksToExtend" th:value="${weeksToExtend}">
+													<input type="hidden" th:name="bookId" th:value="${book.bookId}">
+												</form>
+											</td>
+
+
+											<td class="col-75">
+												<form th:action="@{/user/yourbooks}" method="GET">
+													<button type="submit"  value="Cancel" class="btn bg-gradient-danger  my-4 mb-1">Cancel</button><br>
+												</form>
+											</td>
+										</tr>
+									</table>
+								</div>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</main>
+
+
+</body>
+</html>

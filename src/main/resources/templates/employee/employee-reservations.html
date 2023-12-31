@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Reservations</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/CSS/material-dashboard.css}">
+
+</head>
+<body>
+	<ul th:replace="page-layout :: employeeNavBar"></ul>
+	<div class="main-content position-relative max-height-vh-100 h-100">
+		<div class="container-fluid px-2 px-md-4">
+			<div class="page-header min-height-300 border-radius-xl mt-4"
+				 style="background-image:
+			 url('https://images.unsplash.com/photo-1602722053020-af31042989d5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+				<span class="mask  bg-gradient-info  opacity-6"></span>
+			</div>
+
+			<br><br><br><br><br>
+
+			<div class="row">
+				<div class="card card-body mx-3 mx-md-4 mt-n6">
+					<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+						<div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+							<h3 class="text-white text-capitalize ps-3">Unprocessed Book reservations</h3>
+						</div>
+					</div>
+					<br><br>
+					<div class="row gx-4 mb-2 ms-4">
+
+						<div class="col-12 my-auto">
+							<div class="h-100" >
+
+								<div th:if="${unprocessedReservations.size() == 0}">
+									<h6 class="mb-1" style="color: #0d6efd" >
+										No unprocessed Book reservations.
+									</h6>
+
+								</div>
+								<div class="card-body" >
+									<div class="table-responsive   p-0" th:if="${unprocessedReservations.size() > 0}">
+										<table class="table align-items-center  mb-0">
+											<thead >
+											<tr>
+
+												<th class=" text-uppercase text-secondary  text-xxs font-weight-bolder opacity-7">Title</th>
+
+												<th class=" text-uppercase text-secondary text-xxs font-weight-bolder  opacity-7 ps-2">Author</th>
+												<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Release Year</th>
+												<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Edition</th>
+												<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Reserved by</th>
+												<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Reserved Until</th>
+												<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Set Status</th>
+											</tr>
+											</thead>
+											<tbody >
+											<tr th:each="book : ${unprocessedReservations}" >
+												<td>
+													<p class="text-xs font-weight-bold ms-2 mb-0" th:text="${book.title}"></p>
+												</td>
+												<td>
+													<p class="text-xs font-weight-bold mb-0" th:text="${book.author}"></p>
+												</td>
+												<td>
+													<p class="text-xs font-weight-bold ms-3 mb-0" th:text="${book.releaseYear}"></p>
+												</td>
+												<td>
+													<p class="text-xs font-weight-bold  ms-3 mb-0" th:text="${book.edition}"></p>
+												</td>
+												<td>
+													<p class="text-xs font-weight-bold mb-0" th:text="${book.reservedByUser.firstName + ' ' + book.reservedByUser.lastName}"></p>
+												</td>
+												<td>
+													<p class="text-xs font-weight-bold  ms-2 mb-0" th:text="${book.endReservationDate}"></p>
+												</td>
+
+												<td class="align-middle text-center text-lg">
+													<form th:action="@{/employee/setreadyforpickup}" th:method="PUT">
+														<button type="submit"  value="Ready for Pick Up" class="btn bg-gradient-warning  my-4 ">Ready for Pick Up</button><br>
+
+														<input type="hidden" th:name="_method" th:value="PUT">
+														<input type="hidden" name="bookId" th:value="${book.bookId}">
+														<input type="hidden" name="userId" th:value="${book.reservedByUser.userId}">
+													</form>
+												</td>
+
+											</tr>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<br><br><br><br><br>
+			<div class="row">
+				<div class="card card-body mx-3 mx-md-4 mt-n6">
+					<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+						<div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+							<h3 class="text-white text-capitalize ps-3">Processed Book reservations</h3>
+						</div>
+					</div>
+					<br><br>
+					<div class="row gx-4 mb-2 ms-4">
+
+						<div class="col-12 my-auto">
+							<div class="h-100" >
+
+								<div th:if="${processedReservations.size() == 0}">
+									<h6 class="mb-1" style="color: #0d6efd" >
+										No processed book reservations.
+									</h6>
+								</div>
+								<div >
+									<div class="card-body" >
+										<div class="table-responsive  ms-2 p-0" th:if="${processedReservations.size() > 0}">
+											<table class="table align-items-center  mb-0">
+												<thead >
+												<tr>
+
+													<th class="  text-uppercase text-secondary  text-xxs font-weight-bolder  opacity-7">Title</th>
+
+													<th class=" text-uppercase text-secondary text-xxs font-weight-bolder ms-8 opacity-7 ps-2">Author</th>
+													<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Release Year</th>
+													<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Edition</th>
+													<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Reserved by</th>
+													<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Reserved Until</th>
+												</tr>
+												</thead>
+												<tbody >
+												<tr th:each="book : ${processedReservations}" >
+													<td>
+														<p class="text-xs font-weight-bold ms-2 mb-0" th:text="${book.title}"></p>
+													</td>
+													<td>
+														<p class="text-xs font-weight-bold mb-0" th:text="${book.author}"></p>
+													</td>
+													<td>
+														<p class="text-xs font-weight-bold ms-3 mb-0" th:text="${book.releaseYear}"></p>
+													</td>
+													<td>
+														<p class="text-xs font-weight-bold  ms-3 mb-0" th:text="${book.edition}"></p>
+													</td>
+													<td>
+														<p class="text-xs font-weight-bold mb-0" th:text="${book.reservedByUser.firstName + ' ' + book.reservedByUser.lastName}"></p>
+													</td>
+													<td>
+														<p class="text-xs font-weight-bold  ms-2 mb-0" th:text="${book.endReservationDate}"></p>
+													</td>
+
+
+												</tr>
+
+												</tbody>
+											</table>
+											<br>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<br><br><br><br><br>
+		</div>
+	</div>
+
+
+	
+
+</body>
+</html>
